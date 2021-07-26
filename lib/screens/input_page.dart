@@ -1,10 +1,15 @@
+import 'package:bmi_calculator/screens/calculator_brain.dart';
+import 'package:bmi_calculator/screens/result_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'reuseable_card.dart';
+import '../components/reuseable_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'icon_content.dart';
-import 'constants.dart';
+import '../components/icon_content.dart';
+import '../constants.dart';
+import 'result_page.dart';
+import '../components/bottom_button.dart';
+import '../components/roundicon_button.dart';
 
 enum GenderType { male, female }
 
@@ -224,35 +229,22 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            height: kBottomHeight,
-            width: double.infinity,
-          )
+          BottomButton(label: 'CALCULATE', onTap: (){
+            CalculatorBrain calc = new CalculatorBrain(height: height, weight: weight);
+            String bmi = calc.calculateBMI();
+            String result = calc.getResult();
+            String interpretation = calc.getInterpretation();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ResultPage(
+              bmi: bmi, result: result,interpretation: interpretation,
+            )));
+          },)
         ],
       ),
     );
   }
 }
 
-class RoundIconButton extends StatelessWidget {
-  //const RoundIconButton({Key? key}) : super(key: key);
-  final Widget icon;
-  final Function onPressed;
-  RoundIconButton({@required this.icon, this.onPressed});
 
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      constraints: BoxConstraints(minWidth: 56.0, minHeight: 56.0),
-      fillColor: Colors.white38,
-      elevation: 6.0,
-      shape: CircleBorder(),
-      onPressed: onPressed,
-      child: icon,
-    );
-  }
-}
 
 /*floatingActionButton: Theme(
       data: ThemeData(
